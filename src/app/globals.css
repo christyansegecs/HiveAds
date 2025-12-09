@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FFFEF8D9;
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: transparent;
+    --foreground: #ededed;
+  }
+}
+
+/* 👇 IMPORTANTE: garante que o viewport é fechado e sem scroll */
+html,
+body {
+  height: 100%;
+  background: transparent;
+}
+
+body {
+  background: transparent;
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
