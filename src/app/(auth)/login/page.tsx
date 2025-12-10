@@ -120,7 +120,7 @@ export default function LoginPage() {
           className="mt-5 flex w-full flex-col gap-4 text-[14px] leading-[16px] text-slate-600"
         >
           {/* E-mail */}
-          <div className="mt-2 flex flex-col gap-1.5">
+          <div className="mt-2 mx-3 flex flex-col gap-1.5">
             <div className="flex h-12 items-center gap-3 rounded-lg border border-slate-200 bg-white px-4">
               <Image
                 src="/icons/mail-01.svg"
@@ -146,7 +146,7 @@ export default function LoginPage() {
           </div>
 
           {/* Senha */}
-          <div className="mt-1 flex flex-col gap-1.5">
+          <div className="mt-1 mx-3 flex flex-col gap-1.5">
             <div className="flex h-12 items-center gap-3 rounded-lg border border-slate-200 bg-white px-4">
               <Image
                 src="/icons/lock-01.svg"
@@ -195,7 +195,7 @@ export default function LoginPage() {
           <div className="flex items-center justify-between">
             <label
               htmlFor="keep-signed-in"
-              className="inline-flex items-center gap-2 text-[15px] font-[500] leading-[24px] text-slate-700"
+              className="inline-flex items-center mx-3 gap-2 text-[15px] font-[500] leading-[24px] text-slate-700"
             >
               <input
                 id="keep-signed-in"
@@ -230,9 +230,9 @@ export default function LoginPage() {
 
             <button
               type="button"
-              className="text-[15px] leading-[24px] font-semibold text-[#FFA500] hover:text-[#E68F00]"
+              className="text-[15px] mx-3 leading-[24px] font-semibold text-[#FFA500] hover:text-[#E68F00]"
               onClick={() => {
-                // TODO: navegação para recuperação de senha
+                router.push('/recover-password')
               }}
             >
               Esqueci a senha
@@ -245,6 +245,7 @@ export default function LoginPage() {
             disabled={loading}
             className="
               mt-1
+              mx-3
               h-13
               rounded-lg
               bg-[#111111]
@@ -320,8 +321,7 @@ export default function LoginPage() {
               type="button"
               className="font-semibold text-[15px] leading-[20px] text-[#FF9D1C] hover:underline"
               onClick={() => {
-                // TODO: navegação para tela de cadastro
-                // router.push('/signup')
+                router.push('/signup')
               }}
             >
               Crie agora mesmo

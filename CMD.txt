@@ -1,2 +1,3 @@
 Fazer uma clean build:
+
 Stop-Process -Name "electron", "node" -Force -ErrorAction SilentlyContinue; Remove-Item -Path ".next" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item -Path "$env:APPDATA\hive-ads\Cache" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item -Path "$env:APPDATA\hive-ads\Code Cache" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item -Path "$env:APPDATA\hive-ads\GPUCache" -Recurse -Force -ErrorAction SilentlyContinue
