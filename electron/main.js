@@ -25,8 +25,6 @@ function createMainWindow() {
         hasShadow: false,
 
         resizable: true,
-        maxWidth: 464,
-        maxHeight: 628,
         minWidth: 464,
         minHeight: 628,
 

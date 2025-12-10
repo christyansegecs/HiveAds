@@ -6,9 +6,20 @@ import type { ReactNode } from 'react'
 
 interface AppWindowLoginProps {
   children: ReactNode
+  size?: {
+    width: number
+    height: number
+  }
 }
 
-export function AppWindowLogin({ children }: AppWindowLoginProps) {
+export const DEFAULT_WINDOW_SIZE = {
+  width: 464,
+  height: 628,
+}
+
+export function AppWindowLogin({ children, size }: AppWindowLoginProps) {
+  const appliedSize = size ?? DEFAULT_WINDOW_SIZE
+
   return (
     <div className="flex h-full w-full items-center justify-center bg-transparent">
       {/* Frame externo = "Login" do Figma */}
@@ -16,14 +27,16 @@ export function AppWindowLogin({ children }: AppWindowLoginProps) {
         className="
           drag-region
           flex
-          w-[464px]
-          h-[628px]
           flex-col
           rounded-[24px]
           bg-[#FFFEF8D9] shadow-[0_12px_50px_0_rgba(0,0,0,0.4)]
           p-2
         "
-        style={{ clipPath: 'inset(0 round 24px)' }}
+        style={{
+          clipPath: 'inset(0 round 24px)',
+          width: appliedSize.width,
+          height: appliedSize.height,
+        }}
       >
         {/* Overlay interno com radius 16px */}
         <div

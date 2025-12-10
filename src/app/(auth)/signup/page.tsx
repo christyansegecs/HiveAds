@@ -5,11 +5,19 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { AppWindowLogin } from '@/components/layout/AppWindowLogin'
+import {
+  AppWindowLogin,
+  DEFAULT_WINDOW_SIZE,
+} from '@/components/layout/AppWindowLogin'
 
 const isElectron =
   typeof window !== 'undefined' &&
   !!(window as any).electronAPI?.windowControls
+
+const SIGNUP_WINDOW_SIZE = {
+  width: 480,
+  height: 820,
+}
 
 export default function SignupPage() {
   const router = useRouter()
@@ -31,6 +39,29 @@ export default function SignupPage() {
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = previousOverflow
+    }
+  }, [])
+
+    useEffect(() => {
+    if (!isElectron) return
+
+    const { width, height } = SIGNUP_WINDOW_SIZE
+
+    ;(window as any).electronAPI?.windowControls?.setSize(
+      width,
+      height,
+      width,
+      height,
+    )
+
+    return () => {
+      const { width: defaultWidth, height: defaultHeight } = DEFAULT_WINDOW_SIZE
+      ;(window as any).electronAPI?.windowControls?.setSize(
+        defaultWidth,
+        defaultHeight,
+        defaultWidth,
+        defaultHeight,
+      )
     }
   }, [])
 
@@ -90,7 +121,7 @@ export default function SignupPage() {
   }
 
   return (
-    <AppWindowLogin>
+    <AppWindowLogin size={SIGNUP_WINDOW_SIZE}>
       <div className="no-drag flex h-full flex-col items-center">
         {/* Semáforo da janela */}
         <div className="flex h-1 items-center gap-[7px] self-start rounded-full">
