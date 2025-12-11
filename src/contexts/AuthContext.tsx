@@ -9,13 +9,19 @@ import {
   useEffect,
   useState,
   type ReactNode,
-} from 'react';
+} from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import { authService, type User } from '@/lib/services/auth.service'
+import { api } from '@/lib/api'
 
 interface AuthContextValue {
   isAuthenticated: boolean
+  user: User | null
+  loading: boolean
   login: (email: string, password: string) => Promise<void>
-  logout: () => void
+  register: (email: string, password: string, name: string) => Promise<void>
+  logout: () => Promise<void>
+  refreshUser: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
@@ -23,31 +29,59 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
-  const pathname = usePathname()
 
-  // carrega do localStorage (mock)
+  // Verifica autenticação ao carregar
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    const stored = window.localStorage.getItem('hive_auth')
-    setIsAuthenticated(stored === 'true')
+    const checkAuth = async () => {
+      if (typeof window === 'undefined') return
+
+      const token = localStorage.getItem('hive_access_token')
+      if (!token) {
+        setLoading(false)
+        return
+      }
+
+      try {
+        const userData = await authService.getMe()
+        setUser(userData)
+        setIsAuthenticated(true)
+      } catch {
+        api.clearTokens()
+        setIsAuthenticated(false)
+        setUser(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    checkAuth()
+  }, [])
+
+  const refreshUser = useCallback(async () => {
+    try {
+      const userData = await authService.getMe()
+      setUser(userData)
+    } catch {
+      // Silently fail
+    }
   }, [])
 
   const login = useCallback(
     async (email: string, password: string) => {
-      // aqui depois entra a chamada real para API Nest
       if (!email || !password) {
         throw new Error('Informe e-mail e senha')
       }
 
-      // MOCK: login sempre funciona
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem('hive_auth', 'true')
-      }
+      await authService.login({ email, password })
+      const userData = await authService.getMe()
 
+      setUser(userData)
       setIsAuthenticated(true)
 
-      // 🔹 AQUI: depois de logar, pede pro Electron aumentar a janela
+      // Depois de logar, pede pro Electron aumentar a janela
       if (
         typeof window !== 'undefined' &&
         (window as any).electronAPI?.windowControls?.setSize
@@ -55,31 +89,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         (window as any).electronAPI.windowControls.setSize(1200, 800, 1024, 600)
       }
 
-
-      // depois de logar, vai para /perfis
       router.push('/perfis')
     },
     [router],
   )
 
-  const logout = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      window.localStorage.removeItem('hive_auth')
+  const register = useCallback(
+    async (email: string, password: string, name: string) => {
+      if (!email || !password || !name) {
+        throw new Error('Preencha todos os campos')
+      }
+      await authService.register({ email, password, name })
+      const userData = await authService.getMe()
+
+      setUser(userData)
+
+      setIsAuthenticated(true)
+
+      if (
+        typeof window !== 'undefined' &&
+        (window as any).electronAPI?.windowControls?.setSize
+      ) {
+        (window as any).electronAPI.windowControls.setSize(1200, 800, 1024, 600)
+      }
+
+      router.push('/perfis')
+    },
+    [router],
+  )
+
+  const logout = useCallback(async () => {
+    const refreshToken = localStorage.getItem('hive_refresh_token')
+
+    try {
+      if (refreshToken) {
+        await authService.logout(refreshToken)
+      }
+    } catch {
+      // Continua mesmo se falhar
     }
-
+    api.clearTokens()
     setIsAuthenticated(false)
+    setUser(null)
 
-    // ao deslogar, volta a janela pro tamanho da tela de login
+    // Ao deslogar, volta a janela pro tamanho da tela de login
     if (
       typeof window !== 'undefined' &&
       (window as any).electronAPI?.windowControls?.setSize
     ) {
-      (window as any).electronAPI.windowControls.setSize(
-        464,
-        628,
-        464,
-        628
-      )
+      (window as any).electronAPI.windowControls.setSize(464, 628, 464, 628)
     }
 
     router.push('/login')
@@ -87,8 +145,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value: AuthContextValue = {
     isAuthenticated,
+    user,
+    loading,
     login,
+    register,
     logout,
+    refreshUser,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

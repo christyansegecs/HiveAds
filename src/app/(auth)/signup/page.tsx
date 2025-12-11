@@ -170,7 +170,7 @@ export default function SignupPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="mt-6 flex w-full flex-col gap-5 text-[14px] leading-[16px] text-slate-600"
+          className="mt-6 flex w-full flex-col gap-3 text-[14px] leading-[16px] text-slate-600"
         >
           {/* Email */}
           <div className="mt-1 mx-3 flex flex-col gap-2">

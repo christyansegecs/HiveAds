@@ -184,12 +184,22 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
-
-          {error && (
-            <p className="text-[12px] leading-[16px] text-red-500">
-              {error}
-            </p>
-          )}
+          <div className="relative mx-3">
+            {error && (
+              <p
+                className="
+        absolute
+        -top-2          /* sobe ~2px (ajusta se quiser mais/menos) */
+        left-0
+        text-[12px]
+        leading-[16px]
+        text-[#F04438]  /* vermelho mais “UI” */
+      "
+              >
+                {error}
+              </p>
+            )}
+          </div>
 
           {/* Linha: Manter conectado / Esqueci a senha */}
           <div className="flex items-center justify-between">
@@ -315,7 +325,7 @@ export default function LoginPage() {
           </div>
 
           {/* CTA inferior */}
-          <div className="mt-4 text-center text-[15px] leading-[20px] text-[#475467]">
+          <div className="mt-1 text-center text-[15px] leading-[20px] text-[#475467]">
             <span>Ainda não possui uma conta? </span>
             <button
               type="button"

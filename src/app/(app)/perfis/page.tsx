@@ -2,57 +2,30 @@
 // desktop-app\src\app\(app)\perfis\page.tsx
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import { IconSquareButton } from '@/components/ui/IconSquareButton'
+import { useProfiles } from '@/lib/hooks/useProfiles'
+import { useUserLimits } from '@/lib/hooks/usePlans'
+import { useAuth } from '@/contexts/AuthContext'
 
-const profiles = [
-  {
-    id: '4921',
-    name: 'Facebook Farm - 04',
-    group: 'Contingência',
-    account: 'facebook',
-    browser: 'chrome',
-    os: 'Windows',
-    ip: '191.242.10.55',
-    lastAccess: '18/11 16:34',
-    status: 'fechar',
-  },
-  {
-    id: '4921',
-    name: 'Google Ads - Search US',
-    group: 'Scale - Black Friday',
-    account: 'facebook',
-    browser: 'edge',
-    os: 'macOS',
-    ip: '104.22.15.99',
-    lastAccess: '18/11 16:35',
-    status: 'abrir',
-  },
-  {
-    id: '4921',
-    name: 'Facebook Farm - 04',
-    group: 'Contingência - Nutra',
-    account: 'google',
-    browser: 'chrome',
-    os: 'Windows',
-    ip: '10.0.0.1',
-    lastAccess: '10/09 12:18',
-    status: 'abrir',
-  },
-  {
-    id: '4921',
-    name: 'Facebook Farm - 04',
-    group: 'Dropshipping Genérico',
-    account: 'tiktok',
-    browser: 'chrome',
-    os: 'Windows',
-    ip: '172.16.254.1',
-    lastAccess: '12/09 14:57',
-    status: 'abrir',
-  },
-]
 
 export default function PerfisPage() {
+
+  const { user } = useAuth()
+  const { profiles, loading, error, refresh, deleteProfile, duplicateProfile } = useProfiles()
+  const { limits } = useUserLimits()
+  const [search, setSearch] = useState('')
+
+  const filteredProfiles = profiles.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  )
+
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return '-'
+    const date = new Date(dateStr)
+    return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
+  }
 
   return (
     <div className="flex h-full flex-col">
@@ -60,7 +33,7 @@ export default function PerfisPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-[20px] leading-[24px] font-semibold tracking-[-0.03em] text-[#101828]">
-            Bem vindo, Felipe Y.
+            Bem vindo, {user?.name?.split(' ')[0] || 'Usuário'}
           </h1>
 
           <p className="mt-1 text-[16px] leading-[24px] tracking-[0.01em] text-[#475467]">
@@ -73,14 +46,17 @@ export default function PerfisPage() {
           {/* Botão refresh */}
           <button
             type="button"
-            className="flex h-10 items-center justify-center rounded-lg border border-[#D0D5DD] bg-white px-4 hover:bg-[#F9FAFB]"
+
+            onClick={refresh}
+            disabled={loading}
+            className="flex h-10 items-center justify-center rounded-lg border border-[#D0D5DD] bg-white px-4 hover:bg-[#F9FAFB] disabled:opacity-50"
           >
             <Image
               src="/icons/icon-refresh.svg"
               alt="Atualizar"
               width={17}
               height={15}
-              className="shrink-0"
+              className={`shrink-0 ${loading ? 'animate-spin' : ''}`}
             />
           </button>
 
@@ -103,25 +79,55 @@ export default function PerfisPage() {
 
       {/* CARDS DE MÉTRICA */}
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, idx) => (
-          <div
-            key={idx}
-            className="flex flex-col rounded-2xl border border-[#f0f0f0] bg-[#f7f7f9] px-5 py-4"
-          >
-            <span className="text-[12px] leading-[12px] font-semibold tracking-[-0.01em] text-[#888888]">
-              Perfis ativos
+        <div className="flex flex-col rounded-2xl border border-[#f0f0f0] bg-[#f7f7f9] px-5 py-4">
+          <span className="text-[12px] leading-[12px] font-semibold tracking-[-0.01em] text-[#888888]">
+            Perfis ativos
+          </span>
+          <div className="mt-3 flex items-baseline gap-1">
+            <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+              {limits?.currentProfiles ?? profiles.length}
             </span>
-
-            <div className="mt-3 flex items-baseline gap-1">
-              <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
-                12
-              </span>
-              <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
-                /50
-              </span>
-            </div>
+            <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+              /{limits?.maxProfiles ?? '∞'}
+            </span>
           </div>
-        ))}
+        </div>
+        <div className="flex flex-col rounded-2xl border border-[#f0f0f0] bg-[#f7f7f9] px-5 py-4">
+          <span className="text-[12px] leading-[12px] font-semibold tracking-[-0.01em] text-[#888888]">
+            Automações
+          </span>
+          <div className="mt-3 flex items-baseline gap-1">
+            <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+              0
+            </span>
+            <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+              /{limits?.maxAutomations ?? '∞'}
+            </span>
+          </div>
+        </div>
+        <div className="flex flex-col rounded-2xl border border-[#f0f0f0] bg-[#f7f7f9] px-5 py-4">
+          <span className="text-[12px] leading-[12px] font-semibold tracking-[-0.01em] text-[#888888]">
+            Dispositivos
+          </span>
+          <div className="mt-3 flex items-baseline gap-1">
+            <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+              1
+            </span>
+            <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+              /{limits?.maxDevices ?? '∞'}
+            </span>
+          </div>
+        </div>
+        <div className="flex flex-col rounded-2xl border border-[#f0f0f0] bg-[#f7f7f9] px-5 py-4">
+          <span className="text-[12px] leading-[12px] font-semibold tracking-[-0.01em] text-[#888888]">
+            Plano atual
+          </span>
+          <div className="mt-3 flex items-baseline gap-1">
+            <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+              {user?.plan?.name ?? 'Free'}
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* TOOLBAR LISTA */}
@@ -139,6 +145,8 @@ export default function PerfisPage() {
 
             <input
               placeholder="Pesquisar Perfil"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="flex-1 border-none bg-transparent text-[14px] font-medium leading-[20px] text-[#667085] outline-none placeholder:text-[#667085]"
             />
           </div>
@@ -202,84 +210,104 @@ export default function PerfisPage() {
               </tr>
             </thead>
             <tbody>
-              {profiles.map((profile, idx) => (
-                <tr
-                  key={`${profile.id}-${idx}`}
-                  className="border-t border-slate-100 hover:bg-slate-50/70"
-                >
-                  <td className="px-4 py-3">
-                    <input type="checkbox" className="h-4 w-4" />
-                  </td>
-                  <td className="px-4 py-3 align-top">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-slate-800">
-                        {profile.name}
-                      </span>
-                      <span className="text-[11px] text-slate-400">
-                        ID {profile.id}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 align-top text-sm text-slate-600">
-                    {profile.group}
-                  </td>
-                  <td className="px-4 py-3 align-top">
-                    <span className="text-lg">
-                      {profile.account === 'facebook' && '📘'}
-                      {profile.account === 'google' && '🟦'}
-                      {profile.account === 'tiktok' && '🎵'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 align-top">
-                    <span className="text-lg">
-                      {profile.browser === 'chrome' && '🌐'}
-                      {profile.browser === 'edge' && '🌀'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 align-top text-sm text-slate-600">
-                    {profile.os}
-                  </td>
-                  <td className="px-4 py-3 align-top text-sm text-slate-600">
-                    {profile.ip}
-                  </td>
-                  <td className="px-4 py-3 align-top text-sm text-slate-600">
-                    {profile.lastAccess}
-                  </td>
-                  <td className="px-4 py-3 align-top text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        type="button"
-                        className={`rounded-xl px-3 py-1 text-xs font-medium ${
-                          profile.status === 'fechar'
-                            ? 'bg-red-50 text-red-500'
-                            : 'bg-slate-900 text-white'
-                        }`}
-                      >
-                        {profile.status === 'fechar' ? 'Fechar' : 'Abrir'}
-                      </button>
-                      <button
-                        type="button"
-                        className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        type="button"
-                        className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-red-500"
-                      >
-                        🗑
-                      </button>
-                    </div>
+              {loading ? (
+                <tr>
+                  <td colSpan={9} className="px-4 py-8 text-center text-slate-500">
+                    Carregando perfis...
                   </td>
                 </tr>
-              ))}
+              ) : error ? (
+                <tr>
+                  <td colSpan={9} className="px-4 py-8 text-center text-red-500">
+                    {error}
+                  </td>
+                </tr>
+              ) : filteredProfiles.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="px-4 py-8 text-center text-slate-500">
+                    Nenhum perfil encontrado
+                  </td>
+                </tr>
+              ) : (
+                filteredProfiles.map((profile) => (
+                  <tr
+                    key={profile.id}
+                    className="border-t border-slate-100 hover:bg-slate-50/70"
+                  >
+                    <td className="px-4 py-3">
+                      <input type="checkbox" className="h-4 w-4" />
+                    </td>
+                    <td className="px-4 py-3 align-top">
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-slate-800">
+                          {profile.name}
+                        </span>
+                        <span className="text-[11px] text-slate-400">
+                          ID {profile.id.slice(0, 8)}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 align-top text-sm text-slate-600">
+                      {profile.tags?.join(', ') || '-'}
+                    </td>
+                    <td className="px-4 py-3 align-top">
+                      <span className="text-lg">📘</span>
+                    </td>
+                    <td className="px-4 py-3 align-top">
+                      <span className="text-lg">🌐</span>
+                    </td>
+                    <td className="px-4 py-3 align-top text-sm text-slate-600">
+                      {profile.fingerprint?.timezone || '-'}
+                    </td>
+                    <td className="px-4 py-3 align-top text-sm text-slate-600">
+                      {profile.proxy || '-'}
+                    </td>
+                    <td className="px-4 py-3 align-top text-sm text-slate-600">
+                      {formatDate(profile.lastActivity)}
+                    </td>
+                    <td className="px-4 py-3 align-top text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          type="button"
+                          className={`rounded-xl px-3 py-1 text-xs font-medium ${profile.status === 'running'
+                            ? 'bg-red-50 text-red-500'
+                            : 'bg-slate-900 text-white'
+                            }`}
+                        >
+                          {profile.status === 'running' ? 'Fechar' : 'Abrir'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => duplicateProfile(profile.id)}
+                          className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                          title="Duplicar"
+                        >
+                          📋
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (confirm('Tem certeza que deseja excluir este perfil?')) {
+                              deleteProfile(profile.id)
+                            }
+                          }}
+                          className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-red-500"
+                          title="Excluir"
+                        >
+                          🗑
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
 
         {/* Paginação */}
         <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50 px-4 py-3 text-xs text-slate-500">
-          <span>Página 1 de 10</span>
+          <span>{filteredProfiles.length} perfil(is) encontrado(s)</span>
           <div className="flex items-center gap-2">
             <button
               type="button"
