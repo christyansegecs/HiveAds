@@ -127,24 +127,24 @@ export default function PerfisPage() {
       </div>
 
       {/* LISTA DE PERFIS */}
-      <div className="mt-6 flex flex-1 flex-col overflow-hidden rounded-2xl border border-[#E4E7EC] bg-white shadow-[0px_16px_40px_rgba(16,24,40,0.06)]">
-        <div className="flex items-center justify-between border-b border-[#E7EAF0] px-6 py-4">
-          <span className="text-[15px] font-semibold leading-[20px] text-[#0F172A]">Lista de perfis</span>
+      <div className="mt-6 flex flex-1 flex-col overflow-hidden rounded-[24px] border border-[#E6E8EF] bg-white shadow-[0px_14px_42px_rgba(16,24,40,0.05)]">
+        <div className="flex flex-col gap-5 px-6 py-5">
+          <div className="flex items-center justify-between">
+            <span className="text-[15px] font-semibold leading-[20px] text-[#0F172A]">Lista de perfis</span>
 
-          <div className="flex items-center gap-2">
-            <IconSquareButton icon="/icons/icon-stop.svg" alt="Parar" />
-            <IconSquareButton icon="/icons/icon-upload.svg" alt="Upload" />
-            <IconSquareButton icon="/icons/icon-download.svg" alt="Download" />
-            <IconSquareButton icon="/icons/icon-trash.svg" alt="Excluir" />
+            <div className="flex items-center gap-2">
+              <IconSquareButton icon="/icons/icon-stop.svg" alt="Parar" />
+              <IconSquareButton icon="/icons/icon-upload.svg" alt="Upload" />
+              <IconSquareButton icon="/icons/icon-download.svg" alt="Download" />
+              <IconSquareButton icon="/icons/icon-trash.svg" alt="Excluir" />
+            </div>
           </div>
-        </div>
 
-        {/* TOOLBAR LISTA */}
-        <div className="flex flex-col gap-4 border-b border-[#E7EAF0] px-6 py-5">
+          {/* TOOLBAR LISTA */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex min-w-[260px] flex-1 items-center gap-3">
               {/* INPUT BUSCA */}
-              <div className="flex h-11 flex-1 items-center gap-2 rounded-xl border border-[#E4E7EC] bg-white pl-[14px] pr-[12px] shadow-[0px_2px_10px_rgba(16,24,40,0.04)]">
+              <div className="flex h-11 flex-1 items-center gap-2 rounded-xl border border-[#E4E7EC] bg-white pl-[14px] pr-[12px] shadow-[0px_2px_8px_rgba(16,24,40,0.03)]">
                 <Image
                   src="/icons/icon-search.svg"
                   alt="Buscar"
@@ -202,7 +202,7 @@ export default function PerfisPage() {
 
           <div className="flex items-center justify-between gap-3 text-[13px] font-medium text-[#4B5563]">
             <span className="text-[#6B7280]">Quantidade</span>
-            <div className="flex h-8 items-center rounded-full border border-[#E4E7EC] bg-white px-3 shadow-[0px_6px_16px_rgba(16,24,40,0.08)]">
+            <div className="flex h-8 items-center rounded-full border border-[#E4E7EC] bg-white px-3 shadow-[0px_4px_12px_rgba(16,24,40,0.06)]">
               <span className="text-[#111827]">50</span>
             </div>
           </div>
@@ -213,7 +213,7 @@ export default function PerfisPage() {
           <div className="max-h-full overflow-auto px-6 py-5">
             <table className="w-full min-w-[800px] border-collapse text-sm">
               <thead>
-                <tr className="bg-[#F6F7FB] text-[12px] font-semibold text-[#6F7785]">
+                <tr className="text-[12px] font-semibold text-[#6F7785]">
                   <th className="w-10 px-4 py-3 text-left">
                     <input type="checkbox" className="h-4 w-4" />
                   </th>
@@ -250,7 +250,7 @@ export default function PerfisPage() {
                   filteredProfiles.map((profile) => (
                     <tr
                       key={profile.id}
-                      className="hover:bg-[#F8FAFC]"
+                      className="hover:bg-[#F7F9FC]"
                     >
                       <td className="px-4 py-3">
                         <input type="checkbox" className="h-4 w-4" />
@@ -324,7 +324,7 @@ export default function PerfisPage() {
           </div>
 
           {/* Paginação */}
-          <div className="flex items-center justify-center gap-3 border-t border-[#E7EAF0] bg-[#F6F7FB] px-6 py-4 text-xs text-[#6F7785]">
+          <div className="flex items-center justify-center gap-3 border-t border-[#ECEFF5] bg-white px-6 py-4 text-xs text-[#6F7785]">
             <button
               type="button"
               className="flex h-9 w-20 items-center justify-center rounded-lg border border-[#E4E7EC] bg-white text-xs font-semibold text-[#1F2937] shadow-[0px_2px_10px_rgba(16,24,40,0.04)] disabled:opacity-40"
