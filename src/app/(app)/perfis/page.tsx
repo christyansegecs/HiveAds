@@ -130,195 +130,195 @@ export default function PerfisPage() {
         </div>
       </div>
 
-      {/* TOOLBAR LISTA */}
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex min-w-[260px] flex-1 items-center gap-3">
-          {/* INPUT BUSCA */}
-          <div className="flex h-10 flex-1 items-center gap-2 rounded-lg border border-[#D0D5DD] bg-white pl-[14px] pr-[10px]">
-            <Image
-              src="/icons/icon-search.svg"
-              alt="Buscar"
-              width={15}
-              height={15}
-              className="shrink-0"
-            />
+      {/* LISTA DE PERFIS */}
+      <div className="mt-6 flex flex-1 flex-col overflow-hidden rounded-[26px] border border-[#EDEDED] bg-white shadow-[0px_20px_60px_rgba(0,0,0,0.04)]">
+        {/* TOOLBAR LISTA */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#F3F4F6] bg-[#FBFBFC] px-6 py-5">
+          <div className="flex min-w-[260px] flex-1 items-center gap-3">
+            {/* INPUT BUSCA */}
+            <div className="flex h-11 flex-1 items-center gap-2 rounded-xl border border-[#E7E9EE] bg-white pl-[14px] pr-[12px] shadow-[0px_2px_10px_rgba(16,24,40,0.03)]">
+              <Image
+                src="/icons/icon-search.svg"
+                alt="Buscar"
+                width={15}
+                height={15}
+                className="shrink-0"
+              />
 
-            <input
-              placeholder="Pesquisar Perfil"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 border-none bg-transparent text-[14px] font-medium leading-[20px] text-[#667085] outline-none placeholder:text-[#667085]"
-            />
-          </div>
+              <input
+                placeholder="Pesquisar Perfil"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="flex-1 border-none bg-transparent text-[14px] font-medium leading-[20px] text-[#6F7785] outline-none placeholder:text-[#9AA1AE]"
+              />
+            </div>
 
-          {/* Botão Filtros */}
-          <button
-            type="button"
-            className="flex h-10 items-center gap-2 rounded-lg border border-[#D0D5DD] bg-white px-4 text-[14px] font-medium leading-[20px] text-[#344054] hover:bg-[#F9FAFB]"
-          >
-            <Image
-              src="/icons/icon-filter.svg"
-              alt="Filtros"
-              width={16}
-              height={16}
-              className="shrink-0"
-            />
-            <span>Filtros</span>
-          </button>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {/* Botão ABRIR */}
-          <button
-            type="button"
-            className="flex h-9 items-center gap-2 rounded-md border border-[#D0D5DD] bg-white px-3 text-[14px] font-semibold leading-[20px] text-[#344054] hover:bg-[#F9FAFB]"
-          >
-            <Image
-              src="/icons/icon-play.svg"
-              alt="Abrir"
-              width={9}
-              height={11}
-              className="shrink-0"
-            />
-            <span>Abrir</span>
-          </button>
-
-          <IconSquareButton icon="/icons/icon-stop.svg" alt="Parar" />
-          <IconSquareButton icon="/icons/icon-upload.svg" alt="Upload" />
-          <IconSquareButton icon="/icons/icon-download.svg" alt="Download" />
-          <IconSquareButton icon="/icons/icon-trash.svg" alt="Excluir" />
-        </div>
-      </div>
-
-      {/* TABELA */}
-      <div className="mt-4 flex-1 overflow-hidden rounded-2xl border border-slate-100 bg-white">
-        <div className="max-h-full overflow-auto">
-          <table className="w-full min-w-[800px] border-collapse text-sm">
-            <thead>
-              <tr className="bg-slate-50 text-xs text-slate-500">
-                <th className="w-10 px-4 py-3 text-left">
-                  <input type="checkbox" className="h-4 w-4" />
-                </th>
-                <th className="px-4 py-3 text-left">Perfil</th>
-                <th className="px-4 py-3 text-left">Grupo</th>
-                <th className="px-4 py-3 text-left">Conta</th>
-                <th className="px-4 py-3 text-left">Browser</th>
-                <th className="px-4 py-3 text-left">S.O.</th>
-                <th className="px-4 py-3 text-left">IP</th>
-                <th className="px-4 py-3 text-left">Último acesso</th>
-                <th className="px-4 py-3 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={9} className="px-4 py-8 text-center text-slate-500">
-                    Carregando perfis...
-                  </td>
-                </tr>
-              ) : error ? (
-                <tr>
-                  <td colSpan={9} className="px-4 py-8 text-center text-red-500">
-                    {error}
-                  </td>
-                </tr>
-              ) : filteredProfiles.length === 0 ? (
-                <tr>
-                  <td colSpan={9} className="px-4 py-8 text-center text-slate-500">
-                    Nenhum perfil encontrado
-                  </td>
-                </tr>
-              ) : (
-                filteredProfiles.map((profile) => (
-                  <tr
-                    key={profile.id}
-                    className="border-t border-slate-100 hover:bg-slate-50/70"
-                  >
-                    <td className="px-4 py-3">
-                      <input type="checkbox" className="h-4 w-4" />
-                    </td>
-                    <td className="px-4 py-3 align-top">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-slate-800">
-                          {profile.name}
-                        </span>
-                        <span className="text-[11px] text-slate-400">
-                          ID {profile.id.slice(0, 8)}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 align-top text-sm text-slate-600">
-                      {profile.tags?.join(', ') || '-'}
-                    </td>
-                    <td className="px-4 py-3 align-top">
-                      <span className="text-lg">📘</span>
-                    </td>
-                    <td className="px-4 py-3 align-top">
-                      <span className="text-lg">🌐</span>
-                    </td>
-                    <td className="px-4 py-3 align-top text-sm text-slate-600">
-                      {profile.fingerprint?.timezone || '-'}
-                    </td>
-                    <td className="px-4 py-3 align-top text-sm text-slate-600">
-                      {profile.proxy || '-'}
-                    </td>
-                    <td className="px-4 py-3 align-top text-sm text-slate-600">
-                      {formatDate(profile.lastActivity)}
-                    </td>
-                    <td className="px-4 py-3 align-top text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          type="button"
-                          className={`rounded-xl px-3 py-1 text-xs font-medium ${profile.status === 'running'
-                            ? 'bg-red-50 text-red-500'
-                            : 'bg-slate-900 text-white'
-                            }`}
-                        >
-                          {profile.status === 'running' ? 'Fechar' : 'Abrir'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => duplicateProfile(profile.id)}
-                          className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
-                          title="Duplicar"
-                        >
-                          📋
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (confirm('Tem certeza que deseja excluir este perfil?')) {
-                              deleteProfile(profile.id)
-                            }
-                          }}
-                          className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-red-500"
-                          title="Excluir"
-                        >
-                          🗑
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Paginação */}
-        <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50 px-4 py-3 text-xs text-slate-500">
-          <span>{filteredProfiles.length} perfil(is) encontrado(s)</span>
-          <div className="flex items-center gap-2">
+            {/* Botão Filtros */}
             <button
               type="button"
-              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+              className="flex h-11 items-center gap-2 rounded-xl border border-[#E7E9EE] bg-white px-4 text-[14px] font-semibold leading-[20px] text-[#303742] transition hover:bg-[#F4F6F8]"
+            >
+              <Image
+                src="/icons/icon-filter.svg"
+                alt="Filtros"
+                width={16}
+                height={16}
+                className="shrink-0"
+              />
+              <span>Filtros</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Botão ABRIR */}
+            <button
+              type="button"
+              className="flex h-10 items-center gap-2 rounded-lg border border-[#E7E9EE] bg-white px-3 text-[14px] font-semibold leading-[20px] text-[#303742] transition hover:bg-[#F4F6F8]"
+            >
+              <Image
+                src="/icons/icon-play.svg"
+                alt="Abrir"
+                width={9}
+                height={11}
+                className="shrink-0"
+              />
+              <span>Abrir</span>
+            </button>
+
+            <IconSquareButton icon="/icons/icon-stop.svg" alt="Parar" />
+            <IconSquareButton icon="/icons/icon-upload.svg" alt="Upload" />
+            <IconSquareButton icon="/icons/icon-download.svg" alt="Download" />
+            <IconSquareButton icon="/icons/icon-trash.svg" alt="Excluir" />
+          </div>
+        </div>
+
+        {/* TABELA */}
+        <div className="flex-1 overflow-hidden">
+          <div className="max-h-full overflow-auto px-6 py-5">
+            <table className="w-full min-w-[800px] border-collapse text-sm">
+              <thead>
+                <tr className="text-[12px] font-semibold text-[#6F7785]">
+                  <th className="w-10 px-4 py-3 text-left">
+                    <input type="checkbox" className="h-4 w-4" />
+                  </th>
+                  <th className="px-4 py-3 text-left">Perfil</th>
+                  <th className="px-4 py-3 text-left">Grupo</th>
+                  <th className="px-4 py-3 text-left">Conta</th>
+                  <th className="px-4 py-3 text-left">Browser</th>
+                  <th className="px-4 py-3 text-left">S.O.</th>
+                  <th className="px-4 py-3 text-left">IP</th>
+                  <th className="px-4 py-3 text-left">Último acesso</th>
+                  <th className="px-4 py-3 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr>
+                    <td colSpan={9} className="px-4 py-8 text-center text-[#8A94A6]">
+                      Carregando perfis...
+                    </td>
+                  </tr>
+                ) : error ? (
+                  <tr>
+                    <td colSpan={9} className="px-4 py-8 text-center text-red-500">
+                      {error}
+                    </td>
+                  </tr>
+                ) : filteredProfiles.length === 0 ? (
+                  <tr>
+                    <td colSpan={9} className="px-4 py-8 text-center text-[#8A94A6]">
+                      Nenhum perfil encontrado
+                    </td>
+                  </tr>
+                ) : (
+                  filteredProfiles.map((profile) => (
+                    <tr
+                      key={profile.id}
+                      className="border-t border-[#F0F2F5] hover:bg-[#F8FAFC]"
+                    >
+                      <td className="px-4 py-3">
+                        <input type="checkbox" className="h-4 w-4" />
+                      </td>
+                      <td className="px-4 py-3 align-top">
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium text-slate-800">
+                            {profile.name}
+                          </span>
+                          <span className="text-[11px] text-slate-400">
+                            ID {profile.id.slice(0, 8)}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 align-top text-sm text-slate-600">
+                        {profile.tags?.join(', ') || '-'}
+                      </td>
+                      <td className="px-4 py-3 align-top">
+                        <span className="text-lg">📘</span>
+                      </td>
+                      <td className="px-4 py-3 align-top">
+                        <span className="text-lg">🌐</span>
+                      </td>
+                      <td className="px-4 py-3 align-top text-sm text-slate-600">
+                        {profile.fingerprint?.timezone || '-'}
+                      </td>
+                      <td className="px-4 py-3 align-top text-sm text-slate-600">
+                        {profile.proxy || '-'}
+                      </td>
+                      <td className="px-4 py-3 align-top text-sm text-slate-600">
+                        {formatDate(profile.lastActivity)}
+                      </td>
+                      <td className="px-4 py-3 align-top text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            className={`rounded-xl px-3 py-1 text-xs font-semibold shadow-[0px_2px_10px_rgba(16,24,40,0.06)] ${profile.status === 'running'
+                              ? 'bg-[#FFF1F0] text-[#D92D20]'
+                              : 'bg-[#111827] text-white'
+                              }`}
+                          >
+                            {profile.status === 'running' ? 'Fechar' : 'Abrir'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => duplicateProfile(profile.id)}
+                            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                            title="Duplicar"
+                          >
+                            📋
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (confirm('Tem certeza que deseja excluir este perfil?')) {
+                                deleteProfile(profile.id)
+                              }
+                            }}
+                            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-red-500"
+                            title="Excluir"
+                          >
+                            🗑
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Paginação */}
+          <div className="flex items-center justify-center gap-3 border-t border-[#F3F4F6] bg-[#FBFBFC] px-6 py-4 text-xs text-[#6F7785]">
+            <button
+              type="button"
+              className="flex h-9 w-16 items-center justify-center rounded-lg border border-[#E7E9EE] bg-white text-xs font-semibold text-[#303742] shadow-[0px_2px_10px_rgba(16,24,40,0.03)] disabled:opacity-40"
               disabled
             >
               Anterior
             </button>
             <button
               type="button"
-              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
+              className="flex h-9 w-16 items-center justify-center rounded-lg border border-[#E7E9EE] bg-white text-xs font-semibold text-[#303742] shadow-[0px_2px_10px_rgba(16,24,40,0.03)]"
             >
               Próximo
             </button>
