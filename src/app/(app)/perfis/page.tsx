@@ -131,12 +131,12 @@ export default function PerfisPage() {
       </div>
 
       {/* LISTA DE PERFIS */}
-      <div className="mt-6 flex flex-1 flex-col overflow-hidden rounded-3xl border border-[#E4E8EF] bg-[#F6F7FB] shadow-[0px_18px_50px_rgba(16,24,40,0.06)]">
+      <div className="mt-6 flex flex-1 flex-col overflow-hidden rounded-[26px] border border-[#EDEDED] bg-white shadow-[0px_20px_60px_rgba(0,0,0,0.04)]">
         {/* TOOLBAR LISTA */}
-        <div className="gap-3 border-b border-[#E7EAF0] bg-[#F6F7FB] px-6 py-5">
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#F3F4F6] bg-[#FBFBFC] px-6 py-5">
+          <div className="flex min-w-[260px] flex-1 items-center gap-3">
             {/* INPUT BUSCA */}
-            <div className="flex h-12 flex-1 items-center gap-3 rounded-2xl border border-[#E5E8EF] bg-white px-4 shadow-[0px_8px_20px_rgba(16,24,40,0.08)]">
+            <div className="flex h-11 flex-1 items-center gap-2 rounded-xl border border-[#E7E9EE] bg-white pl-[14px] pr-[12px] shadow-[0px_2px_10px_rgba(16,24,40,0.03)]">
               <Image
                 src="/icons/icon-search.svg"
                 alt="Buscar"
@@ -149,14 +149,14 @@ export default function PerfisPage() {
                 placeholder="Pesquisar Perfil"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 border-none bg-transparent text-[14px] font-medium leading-[20px] text-[#4B5563] outline-none placeholder:text-[#9AA1AE]"
+                className="flex-1 border-none bg-transparent text-[14px] font-medium leading-[20px] text-[#6F7785] outline-none placeholder:text-[#9AA1AE]"
               />
             </div>
 
             {/* Botão Filtros */}
             <button
               type="button"
-              className="flex h-11 items-center gap-2 rounded-2xl bg-[#EFF1F5] px-4 text-[14px] font-semibold leading-[20px] text-[#1F2937] transition hover:bg-[#E4E8F0]"
+              className="flex h-11 items-center gap-2 rounded-xl border border-[#E7E9EE] bg-white px-4 text-[14px] font-semibold leading-[20px] text-[#303742] transition hover:bg-[#F4F6F8]"
             >
               <Image
                 src="/icons/icon-filter.svg"
@@ -169,35 +169,26 @@ export default function PerfisPage() {
             </button>
           </div>
 
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-2">
-              {/* Botão ABRIR */}
-              <button
-                type="button"
-                className="flex h-10 items-center gap-2 rounded-lg border border-[#E3E7EE] bg-white px-3 text-[14px] font-semibold leading-[20px] text-[#1F2937] shadow-[0px_6px_16px_rgba(16,24,40,0.08)] transition hover:bg-[#F4F6FA]"
-              >
-                <Image
-                  src="/icons/icon-play.svg"
-                  alt="Abrir"
-                  width={9}
-                  height={11}
-                  className="shrink-0"
-                />
-                <span>Abrir</span>
-              </button>
+          <div className="flex items-center gap-2">
+            {/* Botão ABRIR */}
+            <button
+              type="button"
+              className="flex h-10 items-center gap-2 rounded-lg border border-[#E7E9EE] bg-white px-3 text-[14px] font-semibold leading-[20px] text-[#303742] transition hover:bg-[#F4F6F8]"
+            >
+              <Image
+                src="/icons/icon-play.svg"
+                alt="Abrir"
+                width={9}
+                height={11}
+                className="shrink-0"
+              />
+              <span>Abrir</span>
+            </button>
 
-              <IconSquareButton icon="/icons/icon-stop.svg" alt="Parar" />
-              <IconSquareButton icon="/icons/icon-upload.svg" alt="Upload" />
-              <IconSquareButton icon="/icons/icon-download.svg" alt="Download" />
-              <IconSquareButton icon="/icons/icon-trash.svg" alt="Excluir" />
-            </div>
-
-            <div className="flex items-center gap-2 text-[13px] font-medium text-[#6B7280]">
-              <span>Quantidade</span>
-              <div className="flex h-8 items-center rounded-full bg-white px-3 shadow-[0px_6px_16px_rgba(16,24,40,0.08)]">
-                <span className="text-[#111827]">50</span>
-              </div>
-            </div>
+            <IconSquareButton icon="/icons/icon-stop.svg" alt="Parar" />
+            <IconSquareButton icon="/icons/icon-upload.svg" alt="Upload" />
+            <IconSquareButton icon="/icons/icon-download.svg" alt="Download" />
+            <IconSquareButton icon="/icons/icon-trash.svg" alt="Excluir" />
           </div>
         </div>
 
@@ -206,7 +197,7 @@ export default function PerfisPage() {
           <div className="max-h-full overflow-auto px-6 py-5">
             <table className="w-full min-w-[800px] border-collapse text-sm">
               <thead>
-                <tr className="rounded-xl bg-white text-[12px] font-semibold text-[#6F7785] shadow-[0px_8px_20px_rgba(16,24,40,0.04)]">
+                <tr className="text-[12px] font-semibold text-[#6F7785]">
                   <th className="w-10 px-4 py-3 text-left">
                     <input type="checkbox" className="h-4 w-4" />
                   </th>
@@ -220,7 +211,7 @@ export default function PerfisPage() {
                   <th className="px-4 py-3 text-right">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#ECEFF5] rounded-xl bg-white">
+              <tbody>
                 {loading ? (
                   <tr>
                     <td colSpan={9} className="px-4 py-8 text-center text-[#8A94A6]">
@@ -243,7 +234,7 @@ export default function PerfisPage() {
                   filteredProfiles.map((profile) => (
                     <tr
                       key={profile.id}
-                      className="hover:bg-[#F8FAFC]"
+                      className="border-t border-[#F0F2F5] hover:bg-[#F8FAFC]"
                     >
                       <td className="px-4 py-3">
                         <input type="checkbox" className="h-4 w-4" />
@@ -317,17 +308,17 @@ export default function PerfisPage() {
           </div>
 
           {/* Paginação */}
-          <div className="flex items-center justify-center gap-3 border-t border-[#E7EAF0] bg-[#F6F7FB] px-6 py-4 text-xs text-[#6F7785]">
+          <div className="flex items-center justify-center gap-3 border-t border-[#F3F4F6] bg-[#FBFBFC] px-6 py-4 text-xs text-[#6F7785]">
             <button
               type="button"
-              className="flex h-9 w-20 items-center justify-center rounded-lg border border-[#E3E7EE] bg-white text-xs font-semibold text-[#1F2937] shadow-[0px_6px_16px_rgba(16,24,40,0.08)] disabled:opacity-40"
+              className="flex h-9 w-16 items-center justify-center rounded-lg border border-[#E7E9EE] bg-white text-xs font-semibold text-[#303742] shadow-[0px_2px_10px_rgba(16,24,40,0.03)] disabled:opacity-40"
               disabled
             >
               Anterior
             </button>
             <button
               type="button"
-              className="flex h-9 w-20 items-center justify-center rounded-lg border border-[#E3E7EE] bg-white text-xs font-semibold text-[#1F2937] shadow-[0px_6px_16px_rgba(16,24,40,0.08)]"
+              className="flex h-9 w-16 items-center justify-center rounded-lg border border-[#E7E9EE] bg-white text-xs font-semibold text-[#303742] shadow-[0px_2px_10px_rgba(16,24,40,0.03)]"
             >
               Próximo
             </button>
