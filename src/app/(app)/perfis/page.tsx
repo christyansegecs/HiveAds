@@ -1,4 +1,3 @@
-
 // desktop-app\src\app\(app)\perfis\page.tsx
 'use client'
 
@@ -9,9 +8,7 @@ import { useProfiles } from '@/lib/hooks/useProfiles'
 import { useUserLimits } from '@/lib/hooks/usePlans'
 import { useAuth } from '@/contexts/AuthContext'
 
-
 export default function PerfisPage() {
-
   const { user } = useAuth()
   const { profiles, loading, error, refresh, deleteProfile, duplicateProfile } = useProfiles()
   const { limits } = useUserLimits()
@@ -46,7 +43,6 @@ export default function PerfisPage() {
           {/* Botão refresh */}
           <button
             type="button"
-
             onClick={refresh}
             disabled={loading}
             className="flex h-10 items-center justify-center rounded-lg border border-[#D0D5DD] bg-white px-4 hover:bg-[#F9FAFB] disabled:opacity-50"
