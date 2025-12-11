@@ -79,7 +79,7 @@ export default function PerfisPage() {
 
       {/* CARDS DE MÉTRICA */}
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        <div className="flex flex-col rounded-2xl border border-[#f0f0f0] bg-[#f7f7f9] px-5 py-4">
+        <div className="flex flex-col rounded-xl border border-[#E6E9EF] bg-white px-5 py-4 shadow-[0px_12px_30px_rgba(16,24,40,0.04)]">
           <span className="text-[12px] leading-[12px] font-semibold tracking-[-0.01em] text-[#888888]">
             Perfis ativos
           </span>
@@ -92,7 +92,7 @@ export default function PerfisPage() {
             </span>
           </div>
         </div>
-        <div className="flex flex-col rounded-2xl border border-[#f0f0f0] bg-[#f7f7f9] px-5 py-4">
+        <div className="flex flex-col rounded-xl border border-[#E6E9EF] bg-white px-5 py-4 shadow-[0px_12px_30px_rgba(16,24,40,0.04)]">
           <span className="text-[12px] leading-[12px] font-semibold tracking-[-0.01em] text-[#888888]">
             Automações
           </span>
@@ -105,7 +105,7 @@ export default function PerfisPage() {
             </span>
           </div>
         </div>
-        <div className="flex flex-col rounded-2xl border border-[#f0f0f0] bg-[#f7f7f9] px-5 py-4">
+        <div className="flex flex-col rounded-xl border border-[#E6E9EF] bg-white px-5 py-4 shadow-[0px_12px_30px_rgba(16,24,40,0.04)]">
           <span className="text-[12px] leading-[12px] font-semibold tracking-[-0.01em] text-[#888888]">
             Dispositivos
           </span>
@@ -118,7 +118,7 @@ export default function PerfisPage() {
             </span>
           </div>
         </div>
-        <div className="flex flex-col rounded-2xl border border-[#f0f0f0] bg-[#f7f7f9] px-5 py-4">
+        <div className="flex flex-col rounded-xl border border-[#E6E9EF] bg-white px-5 py-4 shadow-[0px_12px_30px_rgba(16,24,40,0.04)]">
           <span className="text-[12px] leading-[12px] font-semibold tracking-[-0.01em] text-[#888888]">
             Plano atual
           </span>
