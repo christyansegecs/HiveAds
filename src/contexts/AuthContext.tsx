@@ -18,7 +18,7 @@ interface AuthContextValue {
   isAuthenticated: boolean
   user: User | null
   loading: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string, keepSignedIn: boolean) => Promise<void>
   register: (email: string, password: string, name: string) => Promise<void>
   logout: () => Promise<void>
   refreshUser: () => Promise<void>
@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const checkAuth = async () => {
       if (typeof window === 'undefined') return
 
-      const token = localStorage.getItem('hive_access_token')
+      const token = api.getAccessToken()
       if (!token) {
         setLoading(false)
         return
@@ -70,12 +70,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = useCallback(
-    async (email: string, password: string) => {
+    async (email: string, password: string, keepSignedIn: boolean) => {
       if (!email || !password) {
         throw new Error('Informe e-mail e senha')
       }
 
-      await authService.login({ email, password })
+      await authService.login({ email, password }, keepSignedIn)
       const userData = await authService.getMe()
 
       setUser(userData)
@@ -119,7 +119,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 
   const logout = useCallback(async () => {
-    const refreshToken = localStorage.getItem('hive_refresh_token')
+    const refreshToken = api.getRefreshToken()
 
     try {
       if (refreshToken) {

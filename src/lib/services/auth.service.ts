@@ -31,15 +31,15 @@ export interface LoginData {
 }
 
 export const authService = {
-  async register(data: RegisterData): Promise<AuthResponse> {
+  async register(data: RegisterData, keepSignedIn = true): Promise<AuthResponse> {
     const response = await api.post<AuthResponse>('/auth/register', data, { skipAuth: true })
-    api.setTokens(response.accessToken, response.refreshToken)
+    api.setTokens(response.accessToken, response.refreshToken, keepSignedIn)
     return response
   },
 
-  async login(data: LoginData): Promise<AuthResponse> {
+  async login(data: LoginData, keepSignedIn = false): Promise<AuthResponse> {
     const response = await api.post<AuthResponse>('/auth/login', data, { skipAuth: true })
-    api.setTokens(response.accessToken, response.refreshToken)
+    api.setTokens(response.accessToken, response.refreshToken, keepSignedIn)
     return response
   },
 
