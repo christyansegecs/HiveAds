@@ -2,6 +2,10 @@
 // src/lib/api.ts
 const API_BASE_URL = 'https://hiveads-hiveads-back.ji8osz.easypanel.host/api'
 
+const ACCESS_TOKEN_KEY = 'hive_access_token'
+const REFRESH_TOKEN_KEY = 'hive_refresh_token'
+const KEEP_SIGNED_IN_KEY = 'hive_keep_signed_in'
+
 type RequestOptions = {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
   body?: unknown
@@ -16,26 +20,56 @@ class ApiClient {
     this.baseUrl = baseUrl
   }
 
-  private getAccessToken(): string | null {
+  private getTokenStorage(preferPersist?: boolean): Storage | null {
     if (typeof window === 'undefined') return null
-    return localStorage.getItem('hive_access_token')
+
+    const keepSignedIn = preferPersist ?? window.localStorage.getItem(KEEP_SIGNED_IN_KEY) === 'true'
+    return keepSignedIn ? window.localStorage : window.sessionStorage
   }
 
-  private getRefreshToken(): string | null {
-    if (typeof window === 'undefined') return null
-    return localStorage.getItem('hive_refresh_token')
+  private getFallbackStorage(storage: Storage | null): Storage | null {
+    if (typeof window === 'undefined' || !storage) return null
+    return storage === window.localStorage ? window.sessionStorage : window.localStorage
   }
 
-  setTokens(accessToken: string, refreshToken: string) {
+  getAccessToken(): string | null {
+    if (typeof window === 'undefined') return null
+    const storage = this.getTokenStorage()
+    const fallbackStorage = this.getFallbackStorage(storage)
+    return storage?.getItem(ACCESS_TOKEN_KEY) ?? fallbackStorage?.getItem(ACCESS_TOKEN_KEY) ?? null
+  }
+
+  getRefreshToken(): string | null {
+    if (typeof window === 'undefined') return null
+    const storage = this.getTokenStorage()
+    const fallbackStorage = this.getFallbackStorage(storage)
+    return storage?.getItem(REFRESH_TOKEN_KEY) ?? fallbackStorage?.getItem(REFRESH_TOKEN_KEY) ?? null
+  }
+
+  setTokens(accessToken: string, refreshToken: string, keepSignedIn?: boolean) {
     if (typeof window === 'undefined') return
-    localStorage.setItem('hive_access_token', accessToken)
-    localStorage.setItem('hive_refresh_token', refreshToken)
+
+    const storage = this.getTokenStorage(keepSignedIn)
+    const fallbackStorage = this.getFallbackStorage(storage)
+
+    if (keepSignedIn !== undefined) {
+      window.localStorage.setItem(KEEP_SIGNED_IN_KEY, keepSignedIn ? 'true' : 'false')
+    }
+
+    storage?.setItem(ACCESS_TOKEN_KEY, accessToken)
+    storage?.setItem(REFRESH_TOKEN_KEY, refreshToken)
+
+    fallbackStorage?.removeItem(ACCESS_TOKEN_KEY)
+    fallbackStorage?.removeItem(REFRESH_TOKEN_KEY)
   }
 
   clearTokens() {
     if (typeof window === 'undefined') return
-    localStorage.removeItem('hive_access_token')
-    localStorage.removeItem('hive_refresh_token')
+    window.localStorage.removeItem(KEEP_SIGNED_IN_KEY)
+    window.localStorage.removeItem(ACCESS_TOKEN_KEY)
+    window.localStorage.removeItem(REFRESH_TOKEN_KEY)
+    window.sessionStorage.removeItem(ACCESS_TOKEN_KEY)
+    window.sessionStorage.removeItem(REFRESH_TOKEN_KEY)
   }
 
   private async refreshAccessToken(): Promise<string | null> {

@@ -37,7 +37,7 @@ export default function LoginPage() {
     setError(null)
     setLoading(true)
     try {
-      await login(email, password)
+      await login(email, password, keepSignedIn)
     } catch (err: any) {
       setError(err.message ?? 'Erro ao entrar')
       setLoading(false)
