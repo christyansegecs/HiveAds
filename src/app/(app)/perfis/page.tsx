@@ -29,11 +29,11 @@ export default function PerfisPage() {
       {/* HEADER */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-[20px] leading-[24px] font-semibold tracking-[-0.03em] text-[#101828]">
+          <h1 className="text-[22px] leading-[26px] font-semibold tracking-[-0.02em] text-[#1C2432]">
             Bem vindo, {user?.name?.split(' ')[0] || 'Usuário'}
           </h1>
 
-          <p className="mt-1 text-[16px] leading-[24px] tracking-[0.01em] text-[#475467]">
+          <p className="mt-1 text-[16px] leading-[24px] tracking-[0.01em] text-[#606A7B]">
             Controle e gerencie sobre seus perfis e proxies ativos.
           </p>
         </div>
@@ -45,7 +45,7 @@ export default function PerfisPage() {
             type="button"
             onClick={refresh}
             disabled={loading}
-            className="flex h-10 items-center justify-center rounded-lg border border-[#D0D5DD] bg-white px-4 hover:bg-[#F9FAFB] disabled:opacity-50"
+            className="flex h-11 items-center justify-center rounded-xl border border-[#D8DDE6] bg-white px-4 text-[#1F2937] shadow-[0px_8px_20px_rgba(15,23,42,0.08)] transition hover:bg-[#F6F7FB] disabled:opacity-50"
           >
             <Image
               src="/icons/icon-refresh.svg"
@@ -59,7 +59,7 @@ export default function PerfisPage() {
           {/* Botão primário: Novo Perfil */}
           <button
             type="button"
-            className="flex h-10 items-center gap-2 rounded-lg bg-[#2D2D2D] px-4 text-[14px] font-semibold leading-[20px] text-[#F2F2F2] hover:bg-[#111111]"
+            className="flex h-11 items-center gap-2 rounded-xl bg-[#1F2937] px-4 text-[14px] font-semibold leading-[20px] text-[#F2F2F2] shadow-[0px_8px_22px_rgba(17,24,39,0.2)] transition hover:bg-[#0F172A]"
           >
             <Image
               src="/icons/icon-plus.svg"
