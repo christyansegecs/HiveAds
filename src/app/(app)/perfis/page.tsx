@@ -71,7 +71,6 @@ export default function PerfisPage() {
             <span>Novo Perfil</span>
           </button>
         </div>
-      </div>
 
       {/* CARDS DE MÉTRICA */}
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -86,6 +85,14 @@ export default function PerfisPage() {
             <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
               /{limits?.maxProfiles ?? '∞'}
             </span>
+            <div className="mt-3 flex items-baseline gap-1">
+              <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+                {limits?.currentProfiles ?? profiles.length}
+              </span>
+              <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+                /{limits?.maxProfiles ?? '∞'}
+              </span>
+            </div>
           </div>
         </div>
         <div className="flex flex-col rounded-xl border border-[#E6E9EF] bg-white px-5 py-4 shadow-[0px_12px_30px_rgba(16,24,40,0.04)]">
@@ -99,6 +106,14 @@ export default function PerfisPage() {
             <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
               /{limits?.maxAutomations ?? '∞'}
             </span>
+            <div className="mt-3 flex items-baseline gap-1">
+              <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+                0
+              </span>
+              <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+                /{limits?.maxAutomations ?? '∞'}
+              </span>
+            </div>
           </div>
         </div>
         <div className="flex flex-col rounded-xl border border-[#E6E9EF] bg-white px-5 py-4 shadow-[0px_12px_30px_rgba(16,24,40,0.04)]">
@@ -112,6 +127,14 @@ export default function PerfisPage() {
             <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
               /{limits?.maxDevices ?? '∞'}
             </span>
+            <div className="mt-3 flex items-baseline gap-1">
+              <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+                1
+              </span>
+              <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+                /{limits?.maxDevices ?? '∞'}
+              </span>
+            </div>
           </div>
         </div>
         <div className="flex flex-col rounded-xl border border-[#E6E9EF] bg-white px-5 py-4 shadow-[0px_12px_30px_rgba(16,24,40,0.04)]">
@@ -122,9 +145,13 @@ export default function PerfisPage() {
             <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
               {user?.plan?.name ?? 'Free'}
             </span>
+            <div className="mt-3 flex items-baseline gap-1">
+              <span className="text-[18px] leading-[22px] font-semibold tracking-[-0.01em] text-[#181818]">
+                {user?.plan?.name ?? 'Free'}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
       {/* LISTA DE PERFIS */}
       <div className="mt-6 flex flex-1 flex-col overflow-hidden rounded-[26px] border border-[#EDEDED] bg-white shadow-[0px_20px_60px_rgba(0,0,0,0.04)]">
